@@ -12,9 +12,8 @@ where amount between 3.99 and 5.99;
 
 -- Question 3
 select * from inventory;
-select store_id, film_id, count(film_id) as c from inventory
-group by store_id, film_id
-having count(film_id) = 4
+select film_id, count(film_id) as c from inventory
+group by film_id
 order by c desc;
 -- Answer: See table below
 
@@ -22,14 +21,14 @@ order by c desc;
 -- Question 4
 select * from customer;
 select count(last_name) from customer
-where last_name = 'Williams';
--- Answer: 1
+where last_name = 'William';
+-- Answer: 0
 
 -- Question 5
-select * from payment;
-select count(payment_id), staff_id as ids from payment
+select * from rental;
+select count(*), staff_id from rental
 group by staff_id;
--- Answer: staff_id 2
+-- Answer: staff_id 1 with 8,040 rentals
 
 -- Question 6
 select * from address;
@@ -40,14 +39,16 @@ select count(distinct district) from address;
 select * from film_actor;
 select film_id, count(distinct actor_id) as c from film_actor
 group by film_id
-order by c desc;
+order by c desc
+limit 1;
 -- Answer: film_id 508
 
 -- Question 8:
 select * from customer;
-select count(last_name) from customer
-where last_name like '%es'
--- Answer: 21
+select store_id, count(last_name) from customer
+where last_name like '%es' and store_id = 1
+group by store_id
+-- Answer: 13
 
 -- Question 9:
 select * from payment;
@@ -57,12 +58,8 @@ group by amount
 having count(customer_id) > 250;
 -- Answer: 3
 
-select distinct amount as a, count(distinct customer_id), rental_id from payment
-where customer_id between 380 and 430
-group by a, customer_id, rental_id
-having count(distinct rental_id) < 250;
-
 -- Question 10:
 select * from film;
-select count(distinct rating) from film;
--- Answer: 5
+select rating, count(*) from film
+group by rating;
+-- Answer: 5 categories, PG-13 with the most
